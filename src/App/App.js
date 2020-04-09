@@ -7,7 +7,6 @@ import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
-import config from '../config';
 import Context from '../Context';
 import './App.css';
 
@@ -17,11 +16,39 @@ class App extends Component {
         folders: []
     };
 
-    handleAddedFolder = (folder) => {
-        let newFolder = this.state.folders;
-        newFolder.push(folder)
-        this.setState({
-            folders: folder
+    componentDidMount() {
+        
+        fetch('http://localhost:9090/folders')
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    'folders': result
+                })
+            })
+
+        fetch('http://localhost:9090/notes')
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    'notes': result
+                })
+            })
+    }
+
+    handleAddedFolder = (e, folder) => {
+        e.preventDefault();
+        return fetch('http://localhost:9090/folders', 
+        {
+            method: 'POST', 
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(folder)
+        })
+        .then(res => res.json())
+        .then(folder => {
+            console.log(folder)
+
         })
     }
 
@@ -42,20 +69,7 @@ class App extends Component {
         this.setNotes(newNotes)
     }
 
-    componentDidMount() {
-        
-        fetch(`${config.API_ENPOINT}/folders`)
-            .then(res => res.json())
-            .then(result => this.setState({
-                folders: result
-            }))
-
-        fetch(`${config.API_ENPOINT}/notes`)
-            .then(res => res.json())
-            .then(result => this.setState({
-                notes: result
-            }))
-    }
+    
 
     renderNavRoutes() {
         return (

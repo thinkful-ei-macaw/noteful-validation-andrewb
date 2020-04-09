@@ -2,7 +2,7 @@ import React from 'react'
 import NotefulForm from '../NotefulForm/NotefulForm'
 import './AddFolder.css'
 import Context from '../Context'
-import config from '../config'
+
 
 class AddFolder extends React.Component {
     static defaultProps = {
@@ -19,7 +19,7 @@ class AddFolder extends React.Component {
             name: e.target['new-folder'].value
         }
         console.log(folder)
-        fetch(`${config.API_ENDPOINT}/folders`, {
+        fetch('http://localhost:9090/folders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
