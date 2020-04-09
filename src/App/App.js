@@ -5,8 +5,10 @@ import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
-import dummyStore from '../dummy-store';
-import {getNotesForFolder, findNote, findFolder} from '../notes-helpers';
+import AddFolder from '../AddFolder/AddFolder'
+import AddNote from '../AddNote/AddNote'
+import config from '../config';
+import Context from '../Context';
 import './App.css';
 
 class App extends Component {
@@ -15,13 +17,47 @@ class App extends Component {
         folders: []
     };
 
+    handleAddedFolder = (folder) => {
+        let newFolder = this.state.folders;
+        newFolder.push(folder)
+        this.setState({
+            folders: folder
+        })
+    }
+
+    handleNewNote = (note) => {
+        let newNote = this.state.notes;
+        newNote.push(note)
+        this.setState({
+            notes: newNote
+        })
+    }
+
+    setNotes = notes => {
+        this.setState({ notes: notes });
+    };
+
+    deleteNote = (id) => {
+        const newNotes = this.state.notes.filter(n => n.id !== id);
+        this.setNotes(newNotes)
+    }
+
     componentDidMount() {
-        // fake date loading from API call
-        setTimeout(() => this.setState(dummyStore), 600);
+        
+        fetch(`${config.API_ENPOINT}/folders`)
+            .then(res => res.json())
+            .then(result => this.setState({
+                folders: result
+            }))
+
+        fetch(`${config.API_ENPOINT}/notes`)
+            .then(res => res.json())
+            .then(result => this.setState({
+                notes: result
+            }))
     }
 
     renderNavRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -29,24 +65,10 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        render={routeProps => (
-                            <NoteListNav
-                                folders={folders}
-                                notes={notes}
-                                {...routeProps}
-                            />
-                        )}
+                        component={NoteListNav}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId) || {};
-                        const folder = findFolder(folders, note.folderId);
-                        return <NotePageNav {...routeProps} folder={folder} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageNav} />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
             </>
@@ -54,7 +76,6 @@ class App extends Component {
     }
 
     renderMainRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -62,45 +83,37 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        render={routeProps => {
-                            const {folderId} = routeProps.match.params;
-                            const notesForFolder = getNotesForFolder(
-                                notes,
-                                folderId
-                            );
-                            return (
-                                <NoteListMain
-                                    {...routeProps}
-                                    notes={notesForFolder}
-                                />
-                            );
-                        }}
+                        component={NoteListMain}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId);
-                        return <NotePageMain {...routeProps} note={note} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageMain} />
+                <Route path="/add-folder" component={AddFolder}/>
+                <Route path="/add-note" component={AddNote}/>
             </>
         );
     }
 
     render() {
+        const value = {
+            notes: this.state.notes,
+            folders: this.state.folders,
+            addFolder: this.handleAddedFolder,
+            addNote: this.handleNewNote,
+            deleteNote: this.deleteNote
+        };
         return (
-            <div className="App">
-                <nav className="App__nav">{this.renderNavRoutes()}</nav>
-                <header className="App__header">
-                    <h1>
-                        <Link to="/">Noteful</Link>{' '}
-                        <FontAwesomeIcon icon="check-double" />
-                    </h1>
-                </header>
-                <main className="App__main">{this.renderMainRoutes()}</main>
-            </div>
+            <Context.Provider value={value}>
+                <div className="App">
+                    <nav className="App__nav">{this.renderNavRoutes()}</nav>
+                    <header className="App__header">
+                        <h1>
+                            <Link to="/">Noteful</Link>{' '}
+                            <FontAwesomeIcon icon="check-double" />
+                        </h1>
+                    </header>
+                    <main className="App__main">{this.renderMainRoutes()}</main>
+                </div>
+            </Context.Provider>
         );
     }
 }
