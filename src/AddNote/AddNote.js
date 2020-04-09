@@ -17,6 +17,7 @@ class AddNote extends React.Component {
         const newNote = {
             name: e.target['note-name'].value,
             content: e.target['content-name'].value,
+            modified: new Date()
         }
         console.log(newNote)
         fetch('http://localhost:9090/notes', {
@@ -26,11 +27,15 @@ class AddNote extends React.Component {
             },
             body: JSON.stringify(newNote),
         })
-    }
-
-    state = {
-        name: '',
-        content: ''
+        .then(res => {
+            if(!res.ok)
+                return res.json().then(e => Promise.reject(e))
+            return res.json()
+        })
+        .then(note => {
+            this.context.addNote(note);
+            this.props.history.push(`/note/${note.id}`)
+        })
     }
 
     render() {
@@ -39,9 +44,9 @@ class AddNote extends React.Component {
            
             <NotefulForm onSubmit={this.addNote}>
                 <label htmlFor="name">Name</label>
-                <input id="name" type="text" name="note-name"></input>
+                <input id="name" type="text" name="note-name" required></input>
                 <label htmlFor="content">Content</label>
-                <textarea id="content" type="text" name="content-name" />
+                <textarea id="content" type="text" name="content-name" required/>
                 <button type="submit">Add Note</button>
 
             </NotefulForm>

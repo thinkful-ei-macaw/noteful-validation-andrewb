@@ -35,20 +35,11 @@ class App extends Component {
             })
     }
 
-    handleAddedFolder = (e, folder) => {
-        e.preventDefault();
-        return fetch('http://localhost:9090/folders', 
-        {
-            method: 'POST', 
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(folder)
-        })
-        .then(res => res.json())
-        .then(folder => {
-            console.log(folder)
-
+    handleAddedFolder = (item) => {
+        let folder = this.state.folders;
+        folder.push(item)
+        this.setState({
+            folders: folder
         })
     }
 
