@@ -18,19 +18,23 @@ class App extends Component {
 
     componentDidMount() {
         
-        fetch('http://localhost:9090/folders')
-            .then(res => res.json())
-            .then(result => {
-                this.setState({
-                    'folders': result
-                })
-            })
+        this.updateFolders();
 
         fetch('http://localhost:9090/notes')
             .then(res => res.json())
             .then(result => {
                 this.setState({
                     'notes': result
+                })
+            })
+    }
+
+    updateFolders = () => {
+        fetch('http://localhost:9090/folders')
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    'folders': result
                 })
             })
     }
@@ -104,6 +108,7 @@ class App extends Component {
             folders: this.state.folders,
             addFolder: this.handleAddedFolder,
             addNote: this.handleNewNote,
+            updateFolder: this.updateFolders,
             deleteNote: this.deleteNote
         };
         return (

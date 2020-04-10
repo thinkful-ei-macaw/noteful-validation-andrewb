@@ -1,6 +1,8 @@
 import React from 'react'
 import NotefulForm from '../NotefulForm/NotefulForm'
 import Context from '../Context'
+import PropTypes from 'prop-types'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
 
 class AddNote extends React.Component {
 
@@ -10,6 +12,11 @@ class AddNote extends React.Component {
         }
     }
 
+    static propTypes = {
+        history: PropTypes.object.isRequired
+    }
+
+
     static contextType = Context
 
     addNote = e => {
@@ -17,6 +24,7 @@ class AddNote extends React.Component {
         const newNote = {
             name: e.target['note-name'].value,
             content: e.target['content-name'].value,
+            folderId: e.target.folderId.value,
             modified: new Date()
         }
         console.log(newNote)
@@ -34,6 +42,7 @@ class AddNote extends React.Component {
         })
         .then(note => {
             this.context.addNote(note);
+            this.context.updateFolder();
             this.props.history.push(`/note/${note.id}`)
         })
     }
@@ -43,12 +52,19 @@ class AddNote extends React.Component {
         return(
            
             <NotefulForm onSubmit={this.addNote}>
+            <ErrorBoundary>
                 <label htmlFor="name">Name</label>
                 <input id="name" type="text" name="note-name" required></input>
                 <label htmlFor="content">Content</label>
                 <textarea id="content" type="text" name="content-name" required/>
+                <label htmlFor="folder">Folder</label>
+                <select name="folderId">
+                    {this.context.folders.map(folder => (
+                        <option value={folder.id}>{folder.name}</option>
+                    ))}
+                </select>
                 <button type="submit">Add Note</button>
-
+            </ErrorBoundary>                
             </NotefulForm>
            
         )

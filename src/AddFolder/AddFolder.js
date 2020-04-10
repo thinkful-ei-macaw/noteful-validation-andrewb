@@ -1,14 +1,18 @@
 import React from 'react'
 import NotefulForm from '../NotefulForm/NotefulForm'
-import './AddFolder.css'
 import Context from '../Context'
-
+import PropTypes from 'prop-types'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
 
 class AddFolder extends React.Component {
     static defaultProps = {
         history: {
             push: () => {}
         }
+    }
+    
+    static propTypes = {
+        history: PropTypes.object.isRequired
     }
 
     static contextType = Context;
@@ -41,10 +45,11 @@ class AddFolder extends React.Component {
     render() {
         return (
                 <NotefulForm onSubmit={this.handleAddFolder}>
+                <ErrorBoundary>
                     <label htmlFor="new-folder">New Folder</label>
                     <input type="text" id="new-folder" name="new-folder" required/>
                     <button type='submit'>Add New Folder</button>
-                    
+                </ErrorBoundary>    
                 </NotefulForm>
         )
     }

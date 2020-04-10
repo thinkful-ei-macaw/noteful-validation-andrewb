@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Context from '../Context'
+import PropTypes from 'prop-types'
 import './Note.css'
 
 export default class Note extends React.Component {
@@ -66,4 +67,9 @@ export default class Note extends React.Component {
       </div>
     )
   }
+}
+
+Note.propTypes = {
+  id: PropTypes.string.isRequired, 
+  onDeleteNote: PropTypes.func.isRequired
 }
