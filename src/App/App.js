@@ -8,6 +8,7 @@ import NotePageMain from '../NotePageMain/NotePageMain';
 import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
 import Context from '../Context';
+import config from '../config'
 import './App.css';
 
 class App extends Component {
@@ -20,7 +21,7 @@ class App extends Component {
         
         this.updateFolders();
 
-        fetch('http://localhost:8000/notes')
+        fetch(`${config.API_ENDPOINT}/notes`)
             .then(res => res.json())
             .then(result => {
                 this.setState({
@@ -30,7 +31,7 @@ class App extends Component {
     }
 
     updateFolders = () => {
-        fetch('http://localhost:8000/folders')
+        fetch(`${config.API_ENDPOINT}/folders`)
             .then(res => res.json())
             .then(result => {
                 this.setState({

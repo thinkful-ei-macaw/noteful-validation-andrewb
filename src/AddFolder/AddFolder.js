@@ -3,6 +3,7 @@ import NotefulForm from '../NotefulForm/NotefulForm'
 import Context from '../Context'
 import PropTypes from 'prop-types'
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
+import config from '../config'
 
 class AddFolder extends React.Component {
     static defaultProps = {
@@ -23,7 +24,7 @@ class AddFolder extends React.Component {
             name: e.target['new-folder'].value
         }
         console.log(folder)
-        fetch('http://localhost:8000/folders', {
+        fetch(`${config.API_ENDPOINT}/folders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

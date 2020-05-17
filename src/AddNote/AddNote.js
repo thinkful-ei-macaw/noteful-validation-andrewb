@@ -3,6 +3,7 @@ import NotefulForm from '../NotefulForm/NotefulForm'
 import Context from '../Context'
 import PropTypes from 'prop-types'
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
+import config from '../config'
 
 class AddNote extends React.Component {
 
@@ -24,11 +25,11 @@ class AddNote extends React.Component {
         const newNote = {
             name: e.target['note-name'].value,
             content: e.target['content-name'].value,
-            folderId: e.target.folderId.value,
-            modified: new Date()
+            folder_id: e.target.folderId.value,
+            modified: new Date().toDateString()
         }
         console.log(newNote)
-        fetch('http://localhost:8000/notes', {
+        fetch(`${config.API_ENDPOINT}/notes`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
