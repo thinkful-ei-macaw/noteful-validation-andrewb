@@ -28,6 +28,11 @@ class App extends Component {
                     'notes': result
                 })
             })
+            .then(res => {
+                if(!res.ok)
+                    return res.json().then(e => Promise.reject(e))
+                return res.json()
+            })
     }
 
     updateFolders = () => {
@@ -38,6 +43,7 @@ class App extends Component {
                     'folders': result
                 })
             })
+            
     }
 
     handleAddedFolder = (item) => {
