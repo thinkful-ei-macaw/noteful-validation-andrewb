@@ -20,7 +20,7 @@ class App extends Component {
         
         this.updateFolders();
 
-        fetch('http://localhost:9090/notes')
+        fetch('http://localhost:8000/notes')
             .then(res => res.json())
             .then(result => {
                 this.setState({
@@ -30,7 +30,7 @@ class App extends Component {
     }
 
     updateFolders = () => {
-        fetch('http://localhost:9090/folders')
+        fetch('http://localhost:8000/folders')
             .then(res => res.json())
             .then(result => {
                 this.setState({
@@ -69,7 +69,7 @@ class App extends Component {
     renderNavRoutes() {
         return (
             <>
-                {['/', '/folder/:folderId'].map(path => (
+                {['/', '/folders/:folder_id'].map(path => (
                     <Route
                         exact
                         key={path}
@@ -77,7 +77,7 @@ class App extends Component {
                         component={NoteListNav}
                     />
                 ))}
-                <Route path="/note/:noteId" component={NotePageNav} />
+                <Route path="/notes/:note_id" component={NotePageNav} />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
             </>
@@ -87,7 +87,7 @@ class App extends Component {
     renderMainRoutes() {
         return (
             <>
-                {['/', '/folder/:folderId'].map(path => (
+                {['/', '/folders/:folder_id'].map(path => (
                     <Route
                         exact
                         key={path}
@@ -95,7 +95,7 @@ class App extends Component {
                         component={NoteListMain}
                     />
                 ))}
-                <Route path="/note/:noteId" component={NotePageMain} />
+                <Route path="/notes/:note_id" component={NotePageMain} />
                 <Route path="/add-folder" component={AddFolder}/>
                 <Route path="/add-note" component={AddNote}/>
             </>

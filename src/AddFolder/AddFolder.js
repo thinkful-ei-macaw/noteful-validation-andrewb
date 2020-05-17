@@ -23,7 +23,7 @@ class AddFolder extends React.Component {
             name: e.target['new-folder'].value
         }
         console.log(folder)
-        fetch('http://localhost:9090/folders', {
+        fetch('http://localhost:8000/folders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ class AddFolder extends React.Component {
         })
         .then(folder => {
             this.context.addFolder(folder);
-            this.props.history.push(`/folder/${folder.id}`)
+            this.props.history.push(`/folders/${folder.id}`)
 
         })
     }

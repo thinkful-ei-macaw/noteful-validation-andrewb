@@ -28,7 +28,7 @@ class AddNote extends React.Component {
             modified: new Date()
         }
         console.log(newNote)
-        fetch('http://localhost:9090/notes', {
+        fetch('http://localhost:8000/notes', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -43,7 +43,7 @@ class AddNote extends React.Component {
         .then(note => {
             this.context.addNote(note);
             this.context.updateFolder();
-            this.props.history.push(`/note/${note.id}`)
+            this.props.history.push(`/notes/${note.id}`)
         })
     }
 
