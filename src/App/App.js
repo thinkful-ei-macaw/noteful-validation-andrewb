@@ -57,13 +57,14 @@ class App extends Component {
         })
     }
 
-    setNotes = notes => {
-        this.setState({ notes: notes });
-    };
+    // setNotes = notes => {
+    //     this.setState({ notes: notes });
+    // };
 
     deleteNote = (id) => {
-        const newNotes = this.state.notes.filter(n => n.id !== id);
-        this.setNotes(newNotes)
+        this.setState({
+            notes: this.state.notes.filter(n => n.id === id)
+        })
     }
 
     
