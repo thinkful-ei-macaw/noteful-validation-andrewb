@@ -26,7 +26,7 @@ class AddNote extends React.Component {
             name: e.target['note-name'].value,
             content: e.target['content-name'].value,
             folder_id: e.target.folderId.value,
-            modified: new Date().toDateString()
+            modified: new Date()
         }
         console.log(newNote)
         fetch(`${config.API_ENDPOINT}/notes`, {
@@ -61,7 +61,7 @@ class AddNote extends React.Component {
                 <label htmlFor="folder">Folder</label>
                 <select name="folderId">
                     {this.context.folders.map(folder => (
-                        <option value={folder.id}>{folder.name}</option>
+                        <option key={folder.id} value={folder.id}>{folder.name}</option>
                     ))}
                 </select>
                 <button type="submit">Add Note</button>
