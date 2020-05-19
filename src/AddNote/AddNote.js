@@ -26,7 +26,7 @@ class AddNote extends React.Component {
             name: e.target['note-name'].value,
             content: e.target['content-name'].value,
             folder_id: e.target.folderId.value,
-            modified: new Date()
+            modified: new Date().toLocaleDateString()
         }
         console.log(newNote)
         fetch(`${config.API_ENDPOINT}/notes`, {
