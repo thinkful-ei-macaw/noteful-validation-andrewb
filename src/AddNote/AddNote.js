@@ -44,7 +44,7 @@ class AddNote extends React.Component {
         .then(note => {
             this.context.addNote(note);
             this.context.updateFolder(note);
-            this.props.history.push(`/notes/${note.id}`)
+            this.props.history.push(`/note/${note.id}`)
         })
     }
 
