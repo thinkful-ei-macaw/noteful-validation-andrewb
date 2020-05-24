@@ -20,7 +20,9 @@ export default class NoteListNav extends React.Component {
     <div className='NoteListNav'>
       <ul className='NoteListNav__list'>
         {folders.map(folder =>
+        
           <li key={folder.id}>
+            
             <NavLink
               className='NoteListNav__folder-link'
               to={`/folder/${folder.id}`}
@@ -31,6 +33,7 @@ export default class NoteListNav extends React.Component {
               {folder.name}
             </NavLink>
           </li>
+          
         )}
       </ul>
       <div className='NoteListNav__button-wrapper'>
