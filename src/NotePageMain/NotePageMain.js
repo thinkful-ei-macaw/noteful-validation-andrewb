@@ -22,7 +22,7 @@ export default class NotePageMain extends React.Component {
     const { notes=[] } = this.context
     const noteId = parseInt(this.props.match.params.note_id)
     const note = findNote(notes, noteId) || { content: '' }
-    
+    console.log(noteId)
     return (
       <section className='NotePageMain'>
         <Note
