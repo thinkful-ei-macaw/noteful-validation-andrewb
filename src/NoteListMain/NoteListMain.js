@@ -17,7 +17,7 @@ export default class NoteListMain extends React.Component {
   static contextType = Context
 
   render() {
-    const { folderId } = parseInt(this.props.match.params.folder_id)
+    const folderId = parseInt(this.props.match.params.folder_id)
     const { notes=[] } = this.context
     console.log(notes)
     console.log(folderId)
